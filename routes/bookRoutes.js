@@ -23,20 +23,13 @@ function routes(Book) {
   });
   bookRouter
     .route("/books/:bookId")
-    .get((req, res) => res.json(req.book)) // after code cleanup  /* get one book item from  mongoDb by qruer params */
-
-    //befor code clean
-    // .get((req, res) => {
-    //   // const { query } = req;
-    //   const { bookId } = req.params;
-    //   console.log("--------get--------------");
-    //   Book.findById(bookId, (err, book) => {
-    //     if (err) {
-    //       return res.send(err);
-    //     }
-    //     return res.json(book);
-    //   });
-    // })
+    .get((req, res) => {
+      const returnBooks = req.book.toJSON();
+      const genre = req.book.genre.replace(" ", "%20");
+      returnBooks.links = {};
+      returnBooks.links.filterByThisGerne = `http://${req.headers.host}/api/books/?genre=${genre}`;
+      res.json(returnBooks);
+    }) // after code cleanup  /* get one book item from  mongoDb by qruer params */
     .put((req, res) => {
       /* update books details*/
       console.log("----------Put replace an item---------");
