@@ -1,9 +1,15 @@
 var express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
-const db = mongoose.connect("mongodb://localhost/bookAPI");
+// const db = mongoose.connect("mongodb://localhost/bookAPI");
 var app = express();
-
+if (process.env.ENV === "Test") {
+  console.log("working on name TestingDB database.");
+  const db = mongoose.connect("mongodb://localhost/bookAPI_TestingDB");
+} else {
+  console.log("working on name bookAPI database.");
+  const db = mongoose.connect("mongodb://localhost/bookAPI");
+}
 const Book = require("./models/bookModels");
 const bookRouter = require("./routes/bookRoutes")(Book);
 
@@ -16,6 +22,8 @@ app.get("/", (req, res) => {
   res.send("Welcome to home route.");
 });
 
-app.listen(port, () => {
+app.server = app.listen(port, () => {
   console.log("server is running on port: ", port);
 });
+
+module.exports = app;
