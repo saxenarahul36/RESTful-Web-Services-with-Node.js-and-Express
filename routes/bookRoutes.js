@@ -1,30 +1,13 @@
 const express = require("express");
-
+const booksController = require("../controllers/booksController");
 function routes(Book) {
   const bookRouter = express.Router();
+  const contoller = booksController(Book);
   //get all books
   bookRouter
     .route("/books") /* get all books from db */
-    .post((req, res) => {
-      /* insert a books into book db */
-      const book = new Book(req.body);
-      book.save();
-      return res.status(201).json(book);
-    })
-    .get((req, res) => {
-      /* filter books by query string */
-      const query = {};
-      // this condtion for manage default books if query entered worng in url
-      if (req.query.genre) {
-        query.genre = req.query.genre;
-      }
-      Book.find(query, (err, books) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.json(books);
-      });
-    });
+    .post(contoller.post)
+    .get(contoller.get);
   // Code cleanup by middleware for particular router
   bookRouter.use("/books/:bookId", (req, res, next) => {
     Book.findById(req.params.bookId, (err, book) => {
