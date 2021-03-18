@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const errorMiddleware = require("./error/errorMiddleware");
+const errorMiddleware = require("./src/error/errorMiddleware");
 
 const app = express();
 if (process.env.ENV === "Test") {
@@ -10,8 +10,8 @@ if (process.env.ENV === "Test") {
   console.log("working on name bookAPI database.");
   const db = mongoose.connect("mongodb://localhost/bookAPI");
 }
-const Book = require("./models/bookModels");
-const bookRouter = require("./routes/bookRoutes")(Book);
+const Book = require("./src/models/bookModels");
+const bookRouter = require("./src/routes/bookRoutes")(Book);
 
 const port = process.env.PORT || 3000;
 app.use(errorMiddleware);
