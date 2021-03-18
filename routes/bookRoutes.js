@@ -6,8 +6,8 @@ function routes(Book) {
   //get all books
   bookRouter
     .route("/books") /* get all books from db */
-    .post(contoller.post)
-    .get(contoller.get);
+    .post(contoller.saveNewBook)
+    .get(contoller.getAllBooks);
   // Code cleanup by middleware for particular router
   bookRouter.use("/books/:bookId", (req, res, next) => {
     Book.findById(req.params.bookId, (err, book) => {
